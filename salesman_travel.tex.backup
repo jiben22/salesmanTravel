@@ -19,15 +19,10 @@ Le voyageur de commerce...
 Description du projet et contexte d'utilisation
 Rapport avec les algorithmes génétiques
  
-\section{Algorithme}
-Comment ça marche
-
-Individu \\
-Population \\
-Reproduction 
-
-\chapter{Sélection}
-\chapter{Croisement}
-\chapter{Mutation}
+\section{Contexte d'utilisation}
+ 
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  
+Etiam lobortis facilisissem.  Nullam nec mi et neque pharetra 
+sollicitudin.  Praesent imperdiet mi necante...
  
 \end{document}          
