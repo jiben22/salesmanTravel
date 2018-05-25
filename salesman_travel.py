@@ -65,29 +65,6 @@ def calculAdapt(D, sol):
         dist += D[sol[i]-1, sol[i]-1] #-1 because of start at 1 !
     return dist + D[0, sol[n-1]-1] #Add distance between first and last city
 
-"""
-TEST
-"""
-##STATIC##
-DSt = np.array([[ 0, 60, 44, 24, 66],
-       [60,  0, 56, 90, 60],
-       [44, 56,  0, 35, 60],
-       [24, 90, 35,  0, 25],
-       [66, 60, 60, 25,  0]])
-solSt = [1, 2, 4, 3, 5]
-dist = calculAdapt(DSt, solSt)
-print("Données statiques:", dist,"kms")    
-    
-##DYNAMIC##
-D = carto(5)
-sol = populat(5, 1)
-sol = sol[:, 1]
-
-dist = calculAdapt(D, sol)
-print("Données dynamiques:", dist,"kms")    
-"""
-END TEST
-"""
 
 """
 Give best selection of the half solutions
@@ -137,21 +114,28 @@ def maxi(l):
 """
 TEST
 """
-##STATIC##
-PSt = np.array([[1, 1, 1, 1],
-     [3, 2, 5, 3],
-     [5, 4, 3, 4],
-     [2, 3, 2, 2],
-     [4, 5, 4, 5]])
 
-halfPop = selectElit(DSt, PSt)
-print("Données statiques:", halfPop)  
+try:
+    nbCity=int(raw_input("write the number of cities to travel :"))
+    nbSol=int(raw_input("write the number of solutions you want :"))
+except:
+    print("This isn't a figure, try again")
 
-##DYNAMIC##
-D = carto(5)
-P = populat(5, 2)
-halfPop = selectElit(D, P)
-print("Données dynamiques:", halfPop)    
+Map = carto(nbCity)
+print("the travel map", Map)
+
+BasePop = populat(nbCity, nbSol)
+Sol = BasePop
+Sol = Sol[:, 1]
+print("The basic population", Sol)
+
+halfPop = selectElit(Map, BasePop)
+print("Selected population:", halfPop)
+
+dist = calculAdapt(Map, Sol)
+print("Distance traveled:", dist,"kms")    
+
+
 """
 END TEST
 """
