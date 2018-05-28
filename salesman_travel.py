@@ -100,7 +100,7 @@ def selectElit(D, P):
     return halfPop
 
 """
-Give the highest solution
+Subfunction: To give the highest solution
 """
 def maxi(l):
     maxim = l[0][1]
@@ -112,30 +112,64 @@ def maxi(l):
     return maxim, iMax
 
 """
-TEST
+Take random solutions and give best selection of these solutions
+@param D: matrix with distances for each city
+@param P: matrix which represent base population
+
+@return P: best of half of base population
+""" 
+def selectRoulette(D, P):
+    #Take dimension of cities matrix
+    (n,p) = np.shape(D)
+    #The midle of base population matrix
+    halfPop = int(p/2)
+    
+    #Foreach solution in two half: choose random solution 
+    for i in range(0, halfPop):
+        (n,p) = np.shape(P)
+        #Random selection
+        sol = randint(0, p-1)
+        sol2 = randint(0, p-1)
+        #If sma esolution then choose another random solution
+        while(sol2 == sol):
+            sol2 = randint(0, p-1)
+            #Calcul best distance
+        if(calculAdapt(D, P[:, sol]) > calculAdapt(D, P[:, sol2])):
+            #Delete the worst solution
+            P = np.delete(P, sol, axis=1)
+        else:
+            P = np.delete(P, sol2, axis=1)
+    return P
+
 """
+Principal function which resolve salesman travel issue dynamically !
+"""
+def main():
+    try:
+        nbCity=int(input("Write the number of cities to travel:\n> "))
+        nbSol=int(input("Write the number of solutions you want:\n> "))
+        
+        Map = carto(nbCity)
+        print("the travel map", Map)
+        
+        BasePop = populat(nbCity, nbSol)
+        Sol = BasePop
+        Sol = Sol[:, 1]
+        print("The basic population", Sol)
+        
+        #halfPop = selectElit(Map, BasePop)
+        halfPop = selectRoulette(Map, BasePop)
+        print("Selected population:", halfPop)
+        
+        dist = calculAdapt(Map, Sol)
+        print("Distance traveled:", dist,"kms")   
+    except Exception as e:
+        print("This isn't a figure, try again") 
+        logger.error('Failed to upload to ftp: '+ str(e))
 
-try:
-    nbCity=int(raw_input("write the number of cities to travel :"))
-    nbSol=int(raw_input("write the number of solutions you want :"))
-except:
-    print("This isn't a figure, try again")
-
-Map = carto(nbCity)
-print("the travel map", Map)
-
-BasePop = populat(nbCity, nbSol)
-Sol = BasePop
-Sol = Sol[:, 1]
-print("The basic population", Sol)
-
-halfPop = selectElit(Map, BasePop)
-print("Selected population:", halfPop)
-
-dist = calculAdapt(Map, Sol)
-print("Distance traveled:", dist,"kms")    
-
+    return exit
 
 """
-END TEST
+Execute Main
 """
+main()
