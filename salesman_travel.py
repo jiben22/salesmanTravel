@@ -35,19 +35,21 @@ Create solutions
 @return P: matrix represent base population
 """ 
 def populat(n, m):
-    m = 2*m
+    m = n*m
     #Create matrix (n*m) with ones
     P = np.ones((n, m), dtype=np.int)
+    
     l = []
     for i in range(2, n+1):
         #Create a list of cities
         l.append(i)
     for i in range(0, m):
         #Shuffle cities and append in matrix
-        l2 = l[:] #Copy list as an independant list
+        l2 = l[:]
         shuffle(l2)
+#Copy list as an independant list
         for j in range(1, n):
-            P[j,i] = l2[j-1]
+            P[j,i] = l2[j-1]          
     return P
 
 """
@@ -68,14 +70,14 @@ def calculAdapt(D, sol):
 
 """
 Give best selection of the half solutions
-@param D: matrix with distances for each city
+@param D: matrix with distances for each83 city
 @param P: matrix which represent base population
 
 @return: best of half of base population
 """ 
 def selectElit(D, P):
     #Get size of matrices
-    (n,p) = np.shape(D) 
+    (n,p) = np.shape(D)
     (q,r) = np.shape(P) #r: number of solutions
     
     #Create matrix n * r/2 with zeros
@@ -140,7 +142,31 @@ def selectRoulette(D, P):
         else:
             P = np.delete(P, sol2, axis=1)
     return P
+    
+    """
+Take a solution and give a new solution with a permutation between 2 cities
+@param P: matrix which represent a population
 
+@return P: best of half of base population
+""" 
+def mutate(P):
+    print (P)
+    (n,p) = np.shape(P)
+    
+    #Get index
+    i = randint(2,n)
+    j = randint(2,n)
+    print ("i j",i,j)
+    
+    #Choose random solutions to mutation 
+    indexSol = randint(1, p)
+    print ("indexSol",indexSol)
+    temp=P[i,indexSol]
+    P[i,indexSol]=P[j,indexSol]
+    P[j,indexSol]=temp
+    
+    print(P)
+    return P
 """
 Principal function which resolve salesman travel issue dynamically !
 """
@@ -150,22 +176,26 @@ def main():
         nbSol=int(input("Write the number of solutions you want:\n> "))
         
         Map = carto(nbCity)
-        print("the travel map", Map)
+        #print("the travel map", Map)
         
         BasePop = populat(nbCity, nbSol)
+        print ("Population :",BasePop)
         Sol = BasePop
         Sol = Sol[:, 1]
-        print("The basic population", Sol)
+        #print("The basic population", Sol)
         
-        #halfPop = selectElit(Map, BasePop)
-        halfPop = selectRoulette(Map, BasePop)
-        print("Selected population:", halfPop)
+        halfPop = selectElit(Map, BasePop)
+        #halfPop = selectRoulette(Map, BasePop)
+        #print("Selected population:", halfPop)
         
         dist = calculAdapt(Map, Sol)
-        print("Distance traveled:", dist,"kms")   
+        #print("Distance traveled:", dist,"kms") 
+        
+        mutate(halfPop)
+    
     except Exception as e:
         print("This isn't a figure, try again") 
-        logger.error('Failed to upload to ftp: '+ str(e))
+        print('Failed to upload to ftp: '+ str(e))
 
     return exit
 
