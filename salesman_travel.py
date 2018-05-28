@@ -9,6 +9,7 @@ Created on Mon May 14 11:25:21 2018
 import numpy as np
 from random import shuffle
 from random import randint
+import copy
 
 
 """
@@ -48,6 +49,7 @@ def populat(n, m):
         shuffle(l2)
         for j in range(1, n):
             P[j,i] = l2[j-1]
+            
     return P
 
 """
@@ -142,17 +144,86 @@ def selectRoulette(D, P):
     return P
 
 """
+Crossover two parents and return two children
+@param sol: first solution (individual)
+@param sol2: second solution (individual)
+
+@return children: couple of two children (crossover of parents)
+""" 
+def crossover(sol, sol2):
+    #Take dimensions of solution matrices
+    p = len(sol)
+    
+    #Choose random i and j
+    i = randint(1, p-1) #Beginning of crossing (start after city '1')
+    j = randint(1, p-i) #Crossover width
+
+    #Create two temporary children
+    child = copy.copy(sol) #Copy solution 1 in child 1
+    child2 = copy.copy(sol2) #Copy solution 2 in child 2
+
+    print("\n\nParents")
+    print(child)
+    print(child2)
+    
+    print("\nI:", i, "J:", j)
+
+    #Change specific cities to begin i of width j
+    for iterator in range(0, j):
+        #Replace cities of second solution in first temporary child
+        child[i+iterator] = sol2[i+iterator]        
+        #Replace cities of first solution in second temporary child
+        child2[i+iterator] = sol[i+iterator]
+        
+    print("\nTemporary children")
+    print(child)
+    print(child2)
+    
+    cityDifference = list(set(sol) - set(child))
+    indexDifference = 0
+    
+    cityDifference2 = list(set(sol2) - set(child2))
+    indexDifference2 = 0
+    #Foreach number in array (check if number not exist several time)
+    for iterator in range(1, p):
+        for subiterator in range(iterator+1, p):
+            #CHILD 1: Check if city already exist
+            if(child[iterator] == child[subiterator]):
+                #Replace city already exist by a city which don't exist
+                child[subiterator] = cityDifference[indexDifference]
+                #Increment index difference
+                indexDifference+= 1
+                
+            #CHILD 2: Check if city already exist
+            if(child2[iterator] == child2[subiterator]):
+                #Replace city already exist by a city which don't exist
+                child2[subiterator] = cityDifference2[indexDifference2]
+                #Increment index difference
+                indexDifference2+= 1
+                
+    
+    print("\nCLEAN")         
+    print(child)
+    print(child2)
+    
+    #Create couple of child
+    children = ([child, child2])
+    return children
+                
+
+"""
 Principal function which resolve salesman travel issue dynamically !
 """
 def main():
     try:
-        nbCity=int(input("Write the number of cities to travel:\n> "))
-        nbSol=int(input("Write the number of solutions you want:\n> "))
+        nbCity=int(input("Write the number of cities to travel\n> "))
+        nbSol=int(input("Write the number of solutions you want\n> "))
         
         Map = carto(nbCity)
         print("the travel map", Map)
         
         BasePop = populat(nbCity, nbSol)
+        print("Populat:", populat(nbCity, nbSol))
         Sol = BasePop
         Sol = Sol[:, 1]
         print("The basic population", Sol)
@@ -162,7 +233,15 @@ def main():
         print("Selected population:", halfPop)
         
         dist = calculAdapt(Map, Sol)
-        print("Distance traveled:", dist,"kms")   
+        print("Distance traveled:", dist,"kms")  
+        
+        #TEST
+        individu = halfPop[:, 1]
+        individu2 = halfPop[:, 5]
+        print(individu)
+        print(individu2)
+        crossover(individu, individu2)
+        #END TEST
     except Exception as e:
         print("This isn't a figure, try again") 
         logger.error('Failed to upload to ftp: '+ str(e))
