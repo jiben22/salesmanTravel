@@ -7,6 +7,7 @@ Created on Mon May 14 11:25:21 2018
 """
 
 import numpy as np
+np.set_printoptions (threshold=np.nan)
 from random import shuffle
 from random import randint
 import copy
@@ -157,16 +158,16 @@ def mutate(P):
     #Get index
     i = randint(2,n)
     j = randint(2,n)
-    print ("i j",i,j)
+    
     
     #Choose random solutions to mutation 
-    indexSol = randint(1, p)
-    print ("indexSol",indexSol)
-    temp=P[i,indexSol]
-    P[i,indexSol]=P[j,indexSol]
-    P[j,indexSol]=temp
-    
-    print(P)
+    indexSol = randint(1,n)
+    tempI=P[indexSol-1,i-1]
+    tempJ=P[indexSol-1,j-1]
+    print ("Mutate on i:",tempI,"and j:",tempJ)
+    print ("line :",indexSol)
+    P[indexSol-1,i-1]=tempJ
+    P[indexSol-1,j-1]=tempI
     return P
 """
 Crossover two parents and return two children
@@ -256,14 +257,16 @@ def main():
         
         halfPop = selectElit(Map, BasePop)
         #halfPop = selectRoulette(Map, BasePop)
-        #print("Selected population:", halfPop)
+        print("Selected population:", halfPop)
+        
+        Mutation=mutate(halfPop)
+        print("mutation Select population:",Mutation)
         
         dist = calculAdapt(Map, Sol)
-        #print("Distance traveled:", dist,"kms") 
+        print("Distance traveled:", dist,"kms")          
+       
         
-        mutate(halfPop)
-    
-        print("Distance traveled:", dist,"kms")  
+        
         
         #TEST
         individu = halfPop[:, 1]
