@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
 \usepackage{graphicx}
- 
+
  
 % Title Page
 \title{Mathématiques - Recherche opérationnelle \\
@@ -18,8 +18,8 @@ Steven PELLIET}
 \chapter*{Introduction}
  
 Le voyageur de commerce est un \textbf{problème d'optimisation} qui, étant donné une liste de villes, 
-et des distances entre toutes les paires de villes, détermine un plus court chemin qui visite chaque ville 
-une et une seule fois et qui termine dans la ville de départ. \\
+et des distances entre toutes les paires de villes, \textbf{détermine un plus court chemin qui visite chaque ville 
+une et une seule fois et qui termine dans la ville de départ}. \\
 
 C'est un problème algorithmique célèbre, qui a généré beaucoup de recherches et qui est souvent utilisé comme 
 introduction à l'algorithmique ou à la théorie de la complexité. Il présente de nombreuses applications que ce soit 
@@ -32,22 +32,19 @@ Lorsque le nombre de paramètres possibles est grand cela peut se révéler impr
 
 Une technique mise au point dans les années 1960 est inspirée de la sélection naturelle: il s'agit 
 des \textbf{algorithmes génétiques}. \\
-
-Description du projet et contexte d'utilisation
-Rapport avec les algorithmes génétiques
  
 \chapter*{Principe des algorithmes génétiques}
 
-La sélection naturelle permet de sélectionner les individus les mieux adaptés à l'environnement (Darwin). Cette sélection
-par reproduction: les individus sélectionnés se reproduisent en mélengeant leurs gènes, et ce sont les individus les mieux 
+La \textbf{sélection naturelle} permet de sélectionner les individus les mieux adaptés à l'environnement (Darwin). Cette sélection
+par \textbf{reproduction}: les individus sélectionnés se reproduisent en mélangeant leurs gènes, et ce sont les individus les mieux 
 adaptés qui se reproduisent le plus. Ils transmettent leurs gènes (qui sont supposés être le mieux adaptés) à leur descendance.
 Ainsi, sur une population nombreuse et un grand nombre de générations, les gènes les mieux adaptés seront de plus en plus
-représentés dans la population. D'autres processus d'évolution du matériel génétique existent dans la nature: les mutations. \\
+représentés dans la population. D'autres processus d'évolution du matériel génétique existent dans la nature: les \textbf{mutations}. \\
 
-Les algorithmiques génétiques sont une manière de mimer le processus de sélection naturelle décrit plus haut. On suppose que
-l'on connaît une fonction-objectif qui à chaque individu associe un nombre qui évalue sa performance (par convention: plus 
+Les algorithmiques génétiques sont \textbf{une manière de mimer le processus de sélection naturelle} décrit plus haut. On suppose que
+l'on connaît une fonction-objectif qui à \textbf{chaque individu associe un nombre qui évalue sa performance} (par convention: plus 
 la valeur est basse, meilleure est la performance). On cherche un individu qui a une valeur de la fonction-objectif minimale. \\
-Chaque individu dépend d'un certain nombre de paramètres que l'on peut coder dans une chaîne (par exemple binaire) de longueur
+Chaque individu \textbf{dépend d'un certain nombre de paramètres} que l'on peut coder dans une chaîne (par exemple binaire) de longueur
 \textit{l}. Générer tous les individus possibles est hors de portée car on se place dans un cas où le nombre total
 de paramètres possibles est très grand.
 

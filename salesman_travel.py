@@ -187,12 +187,6 @@ def crossover(sol, sol2):
     child = copy.copy(sol) #Copy solution 1 in child 1
     child2 = copy.copy(sol2) #Copy solution 2 in child 2
 
-    print("\n\nParents")
-    print(child)
-    print(child2)
-    
-    print("\nI:", i, "J:", j)
-
     #Change specific cities to begin i of width j
     for iterator in range(0, j):
         #Replace cities of second solution in first temporary child
@@ -200,10 +194,7 @@ def crossover(sol, sol2):
         #Replace cities of first solution in second temporary child
         child2[i+iterator] = sol[i+iterator]
         
-    print("\nTemporary children")
-    print(child)
-    print(child2)
-    
+    #Search numbers missing bewteen parent of his child
     cityDifference = list(set(sol) - set(child))
     indexDifference = 0
     
@@ -225,11 +216,6 @@ def crossover(sol, sol2):
                 child2[subiterator] = cityDifference2[indexDifference2]
                 #Increment index difference
                 indexDifference2+= 1
-                
-    
-    print("\nCLEAN")         
-    print(child)
-    print(child2)
     
     #Create couple of child
     children = ([child, child2])
@@ -248,8 +234,7 @@ def main():
         #print("the travel map", Map)
         
         BasePop = populat(nbCity, nbSol)
-        #print ("Population :",BasePop)
-        print("Populat:", populat(nbCity, nbSol))
+        print("Population:", populat(nbCity, nbSol))
         Sol = BasePop
         Sol = Sol[:, 1]
         #print("The basic population", Sol)
