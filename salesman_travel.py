@@ -237,7 +237,7 @@ def main():
         nbSol=int(input("Write the number of solutions you want\n> "))
         
         Map = carto(nbCity)
-        #print("the travel map", Map)
+        print("the travel map", Map)
         
         BasePop = populat(nbCity, nbSol)
         print("Population:", populat(nbCity, nbSol))
