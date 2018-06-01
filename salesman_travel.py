@@ -147,28 +147,33 @@ def selectRoulette(D, P):
     
     """
 Take a solution and give a new solution with a permutation between 2 cities
-@param P: matrix which represent a population
+@param sol: matrix which represent a solution (individual)
 
-@return P: best of half of base population
+@return sol: return new solution (individual)
 """ 
-def mutate(P):
-    print (P)
-    (n,p) = np.shape(P)
+def mutate(sol):
+    p = len(sol)
+    print("P", p)
+    
+    print("AVANT:", sol)
     
     #Get index
-    i = randint(2,n)
-    j = randint(2,n)
+    i = randint(1, p-1)
+    j = randint(1, p-1)
+    while(j == i):
+        j = randint(1, p-1)
+        
+    #Get value of cities
+    city1 = sol[i]
+    city2 = sol[j]
     
-    
-    #Choose random solutions to mutation 
-    indexSol = randint(1,n)
-    tempI=P[indexSol-1,i-1]
-    tempJ=P[indexSol-1,j-1]
-    print ("Mutate on i:",tempI,"and j:",tempJ)
-    print ("line :",indexSol)
-    P[indexSol-1,i-1]=tempJ
-    P[indexSol-1,j-1]=tempI
-    return P
+    #Mutate two cities according by position
+    sol[i] = city2
+    sol[j] = city1
+        
+    return sol
+
+
 """
 Crossover two parents and return two children
 @param sol: first solution (individual)
@@ -244,7 +249,7 @@ def main():
         #halfPop = selectRoulette(Map, BasePop)
         print("Selected population:", halfPop)
         
-        Mutation=mutate(halfPop)
+        Mutation=mutate(Sol)
         print("mutation Select population:",Mutation)
         
         dist = calculAdapt(Map, Sol)
