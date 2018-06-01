@@ -48,14 +48,9 @@ def populat(n, m):
         #Shuffle cities and append in matrix
         l2 = l[:]
         shuffle(l2)
-#Copy list as an independant list
-        for j in range(1, n):
-<<<<<<< HEAD
-            P[j,i] = l2[j-1]          
-=======
-            P[j,i] = l2[j-1]
-            
->>>>>>> e0a32a5a38c5b9527d5ac329abad0b50f218ac3d
+        #Copy list as an independant list
+        for j in range(1, n):         
+            P[j,i] = l2[j-1]            
     return P
 
 """
@@ -253,11 +248,8 @@ def main():
         #print("the travel map", Map)
         
         BasePop = populat(nbCity, nbSol)
-<<<<<<< HEAD
-        print ("Population :",BasePop)
-=======
+        #print ("Population :",BasePop)
         print("Populat:", populat(nbCity, nbSol))
->>>>>>> e0a32a5a38c5b9527d5ac329abad0b50f218ac3d
         Sol = BasePop
         Sol = Sol[:, 1]
         #print("The basic population", Sol)
@@ -267,12 +259,10 @@ def main():
         #print("Selected population:", halfPop)
         
         dist = calculAdapt(Map, Sol)
-<<<<<<< HEAD
         #print("Distance traveled:", dist,"kms") 
         
         mutate(halfPop)
     
-=======
         print("Distance traveled:", dist,"kms")  
         
         #TEST
@@ -282,7 +272,6 @@ def main():
         print(individu2)
         crossover(individu, individu2)
         #END TEST
->>>>>>> e0a32a5a38c5b9527d5ac329abad0b50f218ac3d
     except Exception as e:
         print("This isn't a figure, try again") 
         print('Failed to upload to ftp: '+ str(e))
