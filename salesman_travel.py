@@ -298,13 +298,28 @@ def main():
                 if(p > 2):
                     #Create children
                     children = crossover(solutions[:, j-1], solutions[:, j])
+                    solutions = np.concatenate((solutions, solutions), axis=1)
                     #Add children in matrix
                     #print(np.shape(solutions), "VS", np.shape(children))
-                
 
-        dist = calculAdapt(Map, solutions[:, 0])
+        
+        (n, p) = np.shape(solutions)
+        while(p > 2):
+            #Select method (return m solutions)
+            if(selectionMethod == "elit"):
+                solutions = selectElit(Map, solutions)
+            elif(selectionMethod == "roulette"):
+                solutions = selectRoulette(Map, solutions)
+            
+            (n, p) = np.shape(solutions)
+            
+        #There is an unique solution NOW !
+        solution = solutions
+
+        #Display result of salesman's travel
+        dist = calculAdapt(Map, solution[:, 0])
         print("Distance a parcourir: " + str(dist) + " km")
-        print("Ordre des villes: " + str(solutions[:, 0]))
+        print("Ordre des villes: " + str(solution[:, 0]))
     except Exception as e:
         print("This isn't a figure, try again") 
         print('Failed to upload to ftp: '+ str(e))
