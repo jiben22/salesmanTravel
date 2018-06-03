@@ -11,7 +11,8 @@ np.set_printoptions (threshold=np.nan)
 from random import shuffle
 from random import randint
 import copy
-
+#Graph
+import matplotlib.pyplot as plt 
 
 """
 Create a map
@@ -72,7 +73,7 @@ def calculAdapt(D, sol):
 
 """
 Give best selection of the half solutions
-@param D: matrix with distances for each83 city
+@param D: matrix with distances for each city
 @param P: matrix which represent base population
 
 @return: best of half of base population
@@ -153,9 +154,6 @@ Take a solution and give a new solution with a permutation between 2 cities
 """ 
 def mutate(sol):
     p = len(sol)
-    print("P", p)
-    
-    print("AVANT:", sol)
     
     #Get index
     i = randint(1, p-1)
@@ -226,20 +224,90 @@ def crossover(sol, sol2):
     #Create couple of child
     children = ([child, child2])
     return children
-                
+      
+
+"""
+Menu for selection method
+"""          
+def menuSelectionMethod():
+    method = True
+    while method:
+        print ("""
+        1. Sélection par élitisme
+        2. Sélection par roulette (aléatoire)
+        """)
+        method = raw_input("Choissisez une méthode de sélection\n> ") 
+        if method == "1": 
+          return "elit"
+        elif method == "2":
+          return "roulette"
+        elif method != "":
+          print("\nChoix non valide, ressayer !") 
+
+"""
+Rate of mutation
+"""
+def rateMutation():
+    rate = True
+    while rate:
+        rate = int(input("\nÉcrire le taux de mutation (entre 0 et 100 (%))\n> "))
+        if(rate < 0 or rate > 100):
+            print("Le taux de mutation doit être compris entre '0' et '100' !")   
+        else:
+            return rate
 
 """
 Principal function which resolve salesman travel issue dynamically !
 """
 def main():
     try:
-        nbCity=int(input("Write the number of cities to travel\n> "))
-        nbSol=int(input("Write the number of solutions you want\n> "))
+        #Initialization
+        nbCities = int(input("Écrire le nombre de villes à parcourir\n> "))
+        nbSol = int(input("Écrire le nombre de solutions que vous voulez obtenir\n> "))
+        nbIter = int(input("Écrire le nombre d'itérations (générations)\n> "))
+        selectionMethod = menuSelectionMethod()
+        rate = rateMutation()
+                
+        #Create map
+        Map = carto(nbCities)
+        #Create solutionS
+        solutions = populat(nbCities, nbSol)
         
-        Map = carto(nbCity)
-        #print("the travel map", Map)
+        #TEST
+        print("TEST")
+        print(solutions)
         
-        BasePop = populat(nbCity, nbSol)
+        #Browse iterations
+        for i in range(0, nbIter):
+            #Mutate population with a specific rate
+            #MUTATE
+            
+            #Select method (return m solutions)
+            """
+            if(selectionMethod == "elit"):
+                solutions = selectElit(Map, solutions)
+            elif(selectionMethod == "roulette"):
+                solutions = selectRoulette(Map, solutions)
+            """
+            
+            print("Solutions AVANT")
+            print(solutions)
+            
+            #Crossover (return 2m solutions)
+            (n, p) = np.shape(solutions)
+            for j in range(1, n-1, 2): #Step size of 2
+                #Create children
+                children = crossover(solutions[:, j-1], solutions[:, j])
+                #Concatenate
+                children = np.concatenate((children[0], children[1]))
+                #print(children)
+                #Add children in solutions
+                
+                
+            print("Solutions APRES")
+            print(solutions)
+        
+        """
         print("Population:", populat(nbCity, nbSol))
         Sol = BasePop
         Sol = Sol[:, 1]
@@ -254,17 +322,13 @@ def main():
         
         dist = calculAdapt(Map, Sol)
         print("Distance traveled:", dist,"kms")          
-       
-        
-        
         
         #TEST
         individu = halfPop[:, 1]
         individu2 = halfPop[:, 5]
-        print(individu)
-        print(individu2)
         crossover(individu, individu2)
         #END TEST
+        """
     except Exception as e:
         print("This isn't a figure, try again") 
         print('Failed to upload to ftp: '+ str(e))
