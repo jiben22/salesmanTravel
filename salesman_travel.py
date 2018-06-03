@@ -102,7 +102,7 @@ def selectElit(D, P):
         #ajout des solutions dans la matrice
         halfPop[:,i] = P[:,dist[i][0]]
     
-    return halfPop
+    return halfPop.astype(int)
 
 """
 Subfunction: To give the highest solution
@@ -144,7 +144,7 @@ def selectRoulette(D, P):
             P = np.delete(P, sol, axis=1)
         else:
             P = np.delete(P, sol2, axis=1)
-    return P
+    return P.astype(int)
     
     """
 Take a solution and give a new solution with a permutation between 2 cities
@@ -222,7 +222,7 @@ def crossover(sol, sol2):
                 indexDifference2+= 1
     
     #Create couple of child
-    children = ([child, child2])
+    children = np.matrix([child, child2])
     return children
       
 
@@ -262,73 +262,49 @@ Principal function which resolve salesman travel issue dynamically !
 def main():
     try:
         #Initialization
+        """
         nbCities = int(input("Écrire le nombre de villes à parcourir\n> "))
         nbSol = int(input("Écrire le nombre de solutions que vous voulez obtenir\n> "))
         nbIter = int(input("Écrire le nombre d'itérations (générations)\n> "))
         selectionMethod = menuSelectionMethod()
         rate = rateMutation()
+        """
+        nbCities = 5
+        nbSol = 5
+        nbIter = 4
+        selectionMethod = "elit"
+        rate = 50
                 
         #Create map
         Map = carto(nbCities)
         #Create solutionS
         solutions = populat(nbCities, nbSol)
         
-        #TEST
-        print("TEST")
-        print(solutions)
-        
         #Browse iterations
-        for i in range(0, nbIter):
-            #Mutate population with a specific rate
-            #MUTATE
-            
+        for i in range(0, nbIter):            
             #Select method (return m solutions)
-            """
             if(selectionMethod == "elit"):
                 solutions = selectElit(Map, solutions)
             elif(selectionMethod == "roulette"):
                 solutions = selectRoulette(Map, solutions)
-            """
             
-            print("Solutions AVANT")
-            print(solutions)
+            #print("Solutions AVANT")
+            #print(solutions)
             
             #Crossover (return 2m solutions)
             (n, p) = np.shape(solutions)
-            for j in range(1, n-1, 2): #Step size of 2
-                #Create children
-                children = crossover(solutions[:, j-1], solutions[:, j])
-                #Concatenate
-                children = np.concatenate((children[0], children[1]))
-                #print(children)
-                #Add children in solutions
+            
+            for j in range(0, n-1, 2): #Step size of 2
+                if(p > 2):
+                    #Create children
+                    children = crossover(solutions[:, j-1], solutions[:, j])
+                    #Add children in matrix
+                    #print(np.shape(solutions), "VS", np.shape(children))
                 
-                
-            print("Solutions APRES")
-            print(solutions)
-        
-        """
-        print("Population:", populat(nbCity, nbSol))
-        Sol = BasePop
-        Sol = Sol[:, 1]
-        #print("The basic population", Sol)
-        
-        halfPop = selectElit(Map, BasePop)
-        #halfPop = selectRoulette(Map, BasePop)
-        print("Selected population:", halfPop)
-        
-        Mutation=mutate(Sol)
-        print("mutation Select population:",Mutation)
-        
-        dist = calculAdapt(Map, Sol)
-        print("Distance traveled:", dist,"kms")          
-        
-        #TEST
-        individu = halfPop[:, 1]
-        individu2 = halfPop[:, 5]
-        crossover(individu, individu2)
-        #END TEST
-        """
+
+        dist = calculAdapt(Map, solutions[:, 0])
+        print("Distance a parcourir: " + str(dist) + " km")
+        print("Ordre des villes: " + str(solutions[:, 0]))
     except Exception as e:
         print("This isn't a figure, try again") 
         print('Failed to upload to ftp: '+ str(e))
