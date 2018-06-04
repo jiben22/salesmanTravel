@@ -261,51 +261,53 @@ Principal function which resolve salesman travel issue dynamically !
 def main():
     try:
         #Initialization
-        """
         nbCities = int(input("Écrire le nombre de villes à parcourir\n> "))
         nbSol = int(input("Écrire le nombre de solutions que vous voulez obtenir\n> "))
         nbIter = int(input("Écrire le nombre d'itérations (générations)\n> "))
         selectionMethod = menuSelectionMethod()
         rate = rateMutation()
+
         """
-        nbCities = 5
+        #TEST (Fast test)        
+        nbCities = 10
         nbSol = 5
-        nbIter = 4
+        nbIter = 10
         selectionMethod = "elit"
         rate = 50
-            
+        #END TEST
+        """    
+        
         #Create map
         Map = carto(nbCities)
         #Create solutionS
         solutions = populat(nbCities, nbSol)
         
+        #Get size of matrix
+        (n, p) = np.shape(solutions)
+        
         #Browse iterations
-        for i in range(0, nbIter):            
-            #Select method (return m solutions)
-            if(selectionMethod == "elit"):
-                solutions = selectElit(Map, solutions)
-            elif(selectionMethod == "roulette"):
-                solutions = selectRoulette(Map, solutions)
+        for i in range(0, nbIter):  
+            if(p > 2):
+                #Select method (return m solutions)
+                if(selectionMethod == "elit"):
+                    solutions = selectElit(Map, solutions)
+                elif(selectionMethod == "roulette"):
+                    solutions = selectRoulette(Map, solutions)
             
             #Crossover (return 2m solutions)
             (n, p) = np.shape(solutions)
-            
+
             for j in range(0, n-1, 2): #Step size of 2
-                if(p > 2):
+                if(p > 2 and j < p): #Check j in range index of matrix
                     #Create children
                     children = crossover(solutions[:, j-1], solutions[:, j]) 
-                    """
-                    ici inverser size matrix
-                    pour executer 
-                    execfile('/home/jiben/Desktop/Proba/TP2 - Note - Voyageur de commerce/salesman_travel.py')
-                    dans le terminal
-                    """
+                    
                     #Extract child
                     child = children[0]
                     child2 = children[1]
                     #Specify the same shape of matrix solutions
-                    child.shape = (5, 1)
-                    child2.shape = (5, 1)
+                    child.shape = (n, 1)
+                    child2.shape = (n, 1)
                     #Add children in matrix                    
                     np.concatenate((solutions, child, child2), axis=1)
                     
@@ -313,15 +315,15 @@ def main():
                     #Mutate
                     (n, p) = np.shape(solutions)
                     #Calcul nb solutions to mutate
-                    nbMutate = int(float(rate) / float(100) * p)
+                    nbMutate = int(float(rate) / float(100) * (p-1))
                     #Mutate nbMutate first solutions in matrix
-                    for mutate in range(0, nbMutate):
-                        if(nbMutate > 1):
-                            print(nbMutate)
-                            print(solutions[:, nbMutate])
-                            #solutions[nbMutate] = mutate(solutions[:, nbMutate])
-                            #solutions[:, mutate] = mutate(solutions[:, mutate])
-        
+                    for indexMutate in range(0, nbMutate):
+                        if(indexMutate > 1):
+                            #Mutate solution
+                            solutions[:, indexMutate] = mutate(solutions[:, nbMutate])
+
+
+        #While there isn't an unique solution (select method !)
         while(p > 2):
             #Select method (return m solutions)
             if(selectionMethod == "elit"):
@@ -330,17 +332,17 @@ def main():
                 solutions = selectRoulette(Map, solutions)
             
             (n, p) = np.shape(solutions)
-            
+        
         #There is an unique solution NOW !
         solution = solutions
 
+        print(solutions)
         #Display result of salesman's travel
         dist = calculAdapt(Map, solution[:, 0])
         print("Distance a parcourir: " + str(dist) + " km")
         print("Ordre des villes: " + str(solution[:, 0]))
     except Exception as e:
-        print("This isn't a figure, try again") 
-        print('Failed to upload to ftp: '+ str(e))
+        print('ERROR: '+ str(e))
 
     return exit
 
