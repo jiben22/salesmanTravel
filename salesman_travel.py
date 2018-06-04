@@ -12,7 +12,6 @@ from random import shuffle
 from random import randint
 import copy
 #Graph
-import matplotlib.pyplot as plt 
 
 """
 Create a map
@@ -274,7 +273,7 @@ def main():
         nbIter = 4
         selectionMethod = "elit"
         rate = 50
-                
+            
         #Create map
         Map = carto(nbCities)
         #Create solutionS
@@ -288,22 +287,41 @@ def main():
             elif(selectionMethod == "roulette"):
                 solutions = selectRoulette(Map, solutions)
             
-            #print("Solutions AVANT")
-            #print(solutions)
-            
             #Crossover (return 2m solutions)
             (n, p) = np.shape(solutions)
             
             for j in range(0, n-1, 2): #Step size of 2
                 if(p > 2):
                     #Create children
-                    children = crossover(solutions[:, j-1], solutions[:, j])
-                    solutions = np.concatenate((solutions, solutions), axis=1)
-                    #Add children in matrix
-                    #print(np.shape(solutions), "VS", np.shape(children))
-
+                    children = crossover(solutions[:, j-1], solutions[:, j]) 
+                    """
+                    ici inverser size matrix
+                    pour executer 
+                    execfile('/home/jiben/Desktop/Proba/TP2 - Note - Voyageur de commerce/salesman_travel.py')
+                    dans le terminal
+                    """
+                    #Extract child
+                    child = children[0]
+                    child2 = children[1]
+                    #Specify the same shape of matrix solutions
+                    child.shape = (5, 1)
+                    child2.shape = (5, 1)
+                    #Add children in matrix                    
+                    np.concatenate((solutions, child, child2), axis=1)
+                    
+                    
+                    #Mutate
+                    (n, p) = np.shape(solutions)
+                    #Calcul nb solutions to mutate
+                    nbMutate = int(float(rate) / float(100) * p)
+                    #Mutate nbMutate first solutions in matrix
+                    for mutate in range(0, nbMutate):
+                        if(nbMutate > 1):
+                            print(nbMutate)
+                            print(solutions[:, nbMutate])
+                            #solutions[nbMutate] = mutate(solutions[:, nbMutate])
+                            #solutions[:, mutate] = mutate(solutions[:, mutate])
         
-        (n, p) = np.shape(solutions)
         while(p > 2):
             #Select method (return m solutions)
             if(selectionMethod == "elit"):
