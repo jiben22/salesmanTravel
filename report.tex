@@ -14,6 +14,11 @@
  top=20mm,
  }
 
+ % \textsubscript defined equivalent to \textsuperscript in latex.ltx
+\DeclareRobustCommand*\textsubscript[1]{%
+  \@textsubscript{\selectfont#1}}
+\def\@textsubscript#1{%
+  {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}}}}
 
 % Title Page
 \title{Mathématiques - Recherche opérationnelle \\
@@ -59,7 +64,7 @@ des \textbf{algorithmes génétiques}. \\
 \endminipage\hfill
 \minipage{0.32\textwidth}%
   \includegraphics[width=\linewidth]{img/pb3}
-  \caption{Solution optimal du problème}\label{fig:pb3}
+  \caption{Solution optimale du problème}\label{fig:pb3}
 \endminipage
 \end{figure}
 
@@ -92,11 +97,11 @@ Un individu est \textbf{une solution du problème}. Une population représente \
 
 \section{Sélection}
 
-La méthode par sélection permet \textbf{d'éliminer des individus, les solutions les moins adaptés}.
+La méthode par sélection permet \textbf{d'éliminer des individus, les solutions les moins adaptées}.
 
 \section{Croisement}
 
-La méthode par croisement consiste à croiser deux individus, deux solutions qui permet \textbf{de produire de nouveaux}.
+La méthode par croisement consiste à croiser deux individus (parents), qui produisent \textbf{deux nouvelles solutions} (enfants).
 
 \section{Mutation}
 
@@ -112,28 +117,26 @@ La méthode d'adaption consiste \textbf{à évaluer un individu, une solution pa
 \section{Étapes}
 
 \subsection{Initialisation}
-Voici les étapes d'initialisation nécessaire avant de commencer les itérations pour ne garder que les meilleurs solutions.\\
+Voici les étapes d'initialisation nécessaire avant de commencer les itérations qui permet de ne garder que les meilleurs solutions.\\
 \begin{itemize}
-\item \textbf{Création de la map}, elle représente la distance à parcourir entre chaque ville
-\item \textbf{Définition de la population} (villes), à partir du nombre de villes et de solutions voulues, nous obtenons
-une population de base
-\item \textbf{Générer des solutions}, créer un certain nombre de solutions (définis par l'utilisateur), ces solutions représentent l'ordre des villes à parcourir pour obtenir une solution optimal
+\item \textbf{Création de la map}, elle représente la distance entre chaque ville
+\item \textbf{Générer des solutions (population)}, créer un certain nombre de solutions (définis par l'utilisateur), ces solutions représentent l'ordre des villes à parcourir pour obtenir une solution optimale
 \end{itemize}
 
 \subsection{Générations (itérations)}
-Ces itérations permettent de sélectionner les meilleures solutions puis d'en créer de nouvelles à partir de ces dernières. L'objectif est de se rapprocher de la solution optimal !\\
+Les générations consistent à "filtrer" la population (solutions) avec des méthodes spécifiques inspirées de la génétique (sélection, croisement, mutation). La population finale contiendra les ``meilleures solutions''. Cependant les solutions seront approximative car il ne faut pas oublier qu'il s'agit d'un problème d'optimatisation. L'objectif est de se rapprocher de la solution optimale !\\
 \begin{itemize}
  \item \textbf{Sélection par élitisme}, elle consiste à retourner une population (m) plus performante
 \item \textbf{Sélection par roulette}, elle consiste à choisir au hasard deux solutions et ne conservera
 que la meilleure des deux pour ensuite retourner une population (m) plus performante
 \item \textbf{Croisement}, permet de créer de nouvelles solutions se rapprochant des meilleures solutions actuelles, pour obtenir une population (2m). 
-\item \textbf{Mutation}, elle échange deux villes dans une solution, elle permet elle aussi de se rapprocher de la solution optimal
+\item \textbf{Mutation}, elle échange deux villes dans une solution, elle permet elle aussi de se rapprocher de la solution optimale
 \end{itemize}
 
 \subsection{Résultat}
 \begin{itemize}
- \item \textbf{Sélection la meilleure solution}, il s'agit de ne garder que la meilleur solution, la solution optimal
- \item \textbf{Ordre des villes}, il s'agit d'afficher l'ordre des villes à parcourir avec la distance optimal
+ \item \textbf{Sélection de la solution optimale}, il s'agit de ne garder que la meilleure solution, la solution optimale
+ \item \textbf{Ordre des villes}, il s'agit d'afficher l'ordre des villes à parcourir avec la distance optimale
  \item \textbf{Calcul de la distance parcourue}, à partir de la map et de la meilleure solution, elle retourne la distance à parcourir
 \end{itemize}
 
@@ -151,5 +154,28 @@ Voici un exemple de résolution du problème du voyageur de commerce par un util
 \includegraphics[scale=1]{img/results}
 \caption{Résolution du problème du voyageur de commerce}
 \end{figure}
+
+\chapter{Annexe}
+
+\section{Questions}
+
+\textbf{Question 1:} Combien y a t-il d'individus possibles qui sont codés par une chaîne binaire de longueur \textit{l} = 100 ?
+
+\begin{flushleft}
+    \textbf{Réponse:}\\
+    3 individus possibles
+    \begin{itemize}
+    \item 001
+    \item 010
+    \item 100
+    \end{itemize}
+\end{flushleft}
+
+\textbf{Question 2:} Combien y a t-il de permutations des entiers \textit{1..n} ? Est-il envisageable de toutes les énumérer lorsque \textit{n} = 10 ? \textit{n} = 30 ?
+
+\begin{flushleft}
+    \textbf{Réponse:}\\
+    Il y a \textbf{n!} permutations possibles des entiers. Il n'est évidemment pas envisageable de tous les énumérer quand n est grand. Pour \textit{n} = 10, il existe \textbf{3 628 800} permutations possibles et pour \textit{n} = 30, \textbf{2.652 528 60\textsuperscript{32}}.
+\end{flushleft}
  
 \end{document}   
