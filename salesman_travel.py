@@ -336,9 +336,10 @@ def main():
         #There is an unique solution NOW !
         solution = solutions
 
-        print(solutions)
         #Display result of salesman's travel
         dist = calculAdapt(Map, solution[:, 0])
+        
+        print("\n**RÉSULTATS**")
         print("Distance a parcourir: " + str(dist) + " km")
         print("Ordre des villes: " + str(solution[:, 0]))
     except Exception as e:
