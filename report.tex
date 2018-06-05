@@ -1,0 +1,155 @@
+\documentclass[12pt]{report} 
+
+\usepackage{fancyhdr}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+
+% Title Page
+\title{Mathématiques - Recherche opérationnelle \\
+TP noté Python \\
+\textbf{Voyageur de commerce}}
+\author{Benjamin LE GALLO \\
+Steven PELLIET \\
+C2}
+
+\begin{document}
+\pagenumbering{arabic}
+\maketitle
+\thispagestyle{empty}
+
+\tableofcontents
+
+\chapter{Introduction}
+ 
+Le voyageur de commerce est un \textbf{problème d'optimisation} qui, étant donné une liste de villes, 
+et des distances entre toutes les paires de villes, \textbf{détermine un plus court chemin qui visite chaque ville 
+une et une seule fois et qui termine dans la ville de départ}. \\
+
+C'est un problème algorithmique célèbre, qui a généré beaucoup de recherches et qui est souvent utilisé comme 
+introduction à l'algorithmique ou à la théorie de la complexité. Il présente de nombreuses applications que ce soit 
+en planification et en logistique, ou bien dans des domaines plus éloignés comme la génétique 
+(en remplaçant les villes par des gènes et la distance par la similarité). \\
+
+Résoudre un problème d'optimisation, c'est trouver une valeur des paramètres d'un problème qui donne une solution 
+meilleure que les autres. Une façon de trouver les meilleurs paramètres consiste à essayer toutes les valeurs possibles.
+Lorsque le nombre de paramètres possibles est grand cela peut se révéler impraticable.\\
+
+Une technique mise au point dans les années 1960 est inspirée de la sélection naturelle: il s'agit 
+des \textbf{algorithmes génétiques}. \\
+
+\begin{figure}[!htb]
+\minipage{0.32\textwidth}
+  \includegraphics[width=\linewidth]{img/pb1}
+  \caption{Instance du problème}\label{fig:pb1}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+  \includegraphics[width=\linewidth]{img/pb2}
+  \caption{Possible solution du problème}\label{fig:pb2}
+\endminipage\hfill
+\minipage{0.32\textwidth}%
+  \includegraphics[width=\linewidth]{img/pb3}
+  \caption{Solution optimal du problème}\label{fig:pb3}
+\endminipage
+\end{figure}
+
+\cleardoublepage
+\chapter{Algorithmes génétiques}
+
+La \textbf{sélection naturelle} permet de sélectionner les individus les mieux adaptés à l'environnement (Darwin). Cette sélection
+par \textbf{reproduction}: les individus sélectionnés se reproduisent en mélangeant leurs gènes, et ce sont les individus les mieux 
+adaptés qui se reproduisent le plus. Ils transmettent leurs gènes (qui sont supposés être le mieux adaptés) à leur descendance.
+Ainsi, sur une population nombreuse et un grand nombre de générations, les gènes les mieux adaptés seront de plus en plus
+représentés dans la population. D'autres processus d'évolution du matériel génétique existent dans la nature: les \textbf{mutations}. \\
+
+Les algorithmiques génétiques sont \textbf{une manière de mimer le processus de sélection naturelle} décrit plus haut. On suppose que
+l'on connaît une fonction-objectif qui à \textbf{chaque individu associe un nombre qui évalue sa performance} (par convention: plus 
+la valeur est basse, meilleure est la performance). On cherche un individu qui a une valeur de la fonction-objectif minimale. \\
+Chaque individu \textbf{dépend d'un certain nombre de paramètres} que l'on peut coder dans une chaîne (par exemple binaire) de longueur
+\textit{l}. Générer tous les individus possibles est hors de portée car on se place dans un cas où le nombre total
+de paramètres possibles est très grand.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.74]{img/algo-genetic}
+\caption{Illustration de l'algorithme génétique}
+\end{figure}
+
+\section{Principe des algorithmes génétiques}
+
+Un individu est \textbf{une solution du problème}. Une population représente \textbf{tous les individus, toutes les solutions}.
+
+
+\section{Sélection}
+
+La méthode par sélection permet \textbf{d'éliminer des individus, les solutions les moins adaptés}.
+
+\section{Croisement}
+
+La méthode par croisement consiste à croiser deux individus, deux solutions qui permet \textbf{de produire de nouveaux}.
+
+\section{Mutation}
+
+La méthode par mutation consiste \textbf{à modifier aléatoirement un individu, une solution}.
+
+\section{Adaptation}
+
+La méthode d'adaption consiste \textbf{à évaluer un individu, une solution par rapport au problème à résoudre}.
+
+\cleardoublepage
+\chapter{Fonctionnement (Python)}
+
+\section{Étapes}
+
+\subsection{Initialisation}
+Voici les étapes d'initialisation nécessaire avant de commencer les itérations pour ne garder que les meilleurs solutions.\\
+\begin{itemize}
+\item \textbf{Création de la map}, elle représente la distance à parcourir entre chaque ville
+\item \textbf{Définition de la population} (villes), à partir du nombre de villes et de solutions voulues, nous obtenons
+une population de base
+\item \textbf{Générer des solutions}, créer un certain nombre de solutions (définis par l'utilisateur), ces solutions représentent l'ordre des villes à parcourir pour obtenir une solution optimal
+\end{itemize}
+
+\subsection{Générations (itérations)}
+Ces itérations permettent de sélectionner les meilleures solutions puis d'en créer de nouvelles à partir de ces dernières. L'objectif est de se rapprocher de la solution optimal !\\
+\begin{itemize}
+ \item \textbf{Sélection par élitisme}, elle consiste à retourner une population (m) plus performante
+\item \textbf{Sélection par roulette}, elle consiste à choisir au hasard deux solutions et ne conservera
+que la meilleure des deux pour ensuite retourner une population (m) plus performante
+\item \textbf{Croisement}, permet de créer de nouvelles solutions se rapprochant des meilleures solutions actuelles, pour obtenir une population (2m). 
+\item \textbf{Mutation}, elle échange deux villes dans une solution, elle permet elle aussi de se rapprocher de la solution optimal
+\end{itemize}
+
+\subsection{Résultat}
+\begin{itemize}
+ \item \textbf{Sélection la meilleure solution}, il s'agit de ne garder que la meilleur solution, la solution optimal
+ \item \textbf{Ordre des villes}, il s'agit d'afficher l'ordre des villes à parcourir avec la distance optimal
+ \item \textbf{Calcul de la distance parcourue}, à partir de la map et de la meilleure solution, elle retourne la distance à parcourir
+\end{itemize}
+
+\section{Éxecution}
+Voici un exemple de résolution du problème du voyageur de commerce par un utilisateur.\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.85]{img/initialization}
+\caption{Initialisation des variables}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{img/results}
+\caption{Résolution du problème du voyageur de commerce}
+\end{figure}
+ 
+\end{document}   
