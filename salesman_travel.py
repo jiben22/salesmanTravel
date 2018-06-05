@@ -235,7 +235,7 @@ def menuSelectionMethod():
         1. Sélection par élitisme
         2. Sélection par roulette (aléatoire)
         """)
-        method = raw_input("Choissisez une méthode de sélection\n> ") 
+        method = input("Choissisez une méthode de sélection\n> ") 
         if method == "1": 
           return "elit"
         elif method == "2":
